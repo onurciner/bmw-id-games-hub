@@ -59,7 +59,7 @@
     {
       "id": "roi_game_hub",
       "kind": "app",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "title": "ROI Game Hub",
       "description": "Five controller-friendly 2D mini games for parked vehicles",
       "author": "Roi",
@@ -68,10 +68,10 @@
         "ID8"
       ],
       "artifact": {
-        "name": "roi_game_hub@0.1.0.tgz",
-        "size": 941280,
-        "sha256": "715ddf9e1716b601c4982f7a6783a3eb2d0c71bcf62ef28187f2bbe6ee86e6f5",
-        "url": "roi_game_hub@0.1.0.tgz"
+        "name": "roi_game_hub@0.1.1.tgz",
+        "size": 941391,
+        "sha256": "edae856929cb34771a516fa1345b549a7c3b45ad64a5b9e49a9b138b258489f6",
+        "url": "roi_game_hub@0.1.1.tgz"
       },
       "requires": {
         "mgu-deploy": "0.8.19",

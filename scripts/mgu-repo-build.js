@@ -10,7 +10,7 @@ var id = process.argv[2];
 var version = process.argv[3];
 var outputDir = process.env.MGU_OUT;
 
-if (id !== 'roi_game_hub' || version !== '0.1.0') {
+if (id !== 'roi_game_hub' || version !== '0.1.1') {
     throw new Error('Unsupported ROI Game Hub build: ' + id + '@' + version);
 }
 if (!outputDir) {

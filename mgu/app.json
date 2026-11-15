@@ -2,7 +2,7 @@
   "id": "roi_game_hub",
   "title": "ROI Game Hub",
   "description": "Five controller-friendly 2D mini games for parked vehicles",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "vendor": "Roi",
   "loggingId": "ROGH",
   "iconGlyph": "game",
@@ -21,7 +21,8 @@
       "name": "MAIN",
       "kind": "canvas",
       "title": "ROI Game Hub",
-      "buttons": [["BTN_ACTION", "Library"]]
+      "chrome": false,
+      "bar": false
     }
   ]
 }

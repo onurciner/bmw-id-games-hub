@@ -157,7 +157,6 @@ mgu.run({
         }, log).then((result) => {
             if (result && result.error) log.warn('controller signal unavailable: ' + result.error);
         }).catch((error) => log.warn('controller signal unavailable: ' + (error.message || error)));
-        ui.onClick('BTN_ACTION', () => { if (active) endGame(); });
         ctx.onTap((x, y) => {
             if (!parked()) return;
             if (!active) {
@@ -179,7 +178,7 @@ mgu.run({
             text(cv, right || 'ID7  /  ID8', 1544, 62, 18, C.muted, { align: 'right' });
             cv.line(48, 112, 1552, 112, 1, C.line);
         }
-        function drawHome(cv) {
+        function drawHome(cv, contentH) {
             drawHeader(cv, 'GAME HUB', '5 GAMES  /  CONTROLLER READY');
             text(cv, 'PICK A GAME', 54, 150, 16, C.muted, { font: 'bold', spacing: 2 });
             GAMES.forEach((g, i) => {
@@ -190,15 +189,15 @@ mgu.run({
                 text(cv, g.title, x + 18, y + 156, 19, C.text, { font: 'bold', align: 'center' });
                 text(cv, g.desc, x + 18, y + 186, 13, C.muted, { font: 'bold', align: 'center', spacing: 1 });
             });
-            box(cv, 48, 430, 1504, 54, C.panel, 14);
+            box(cv, 48, contentH - 66, 1504, 44, C.panel, 14);
             if (!parked()) {
                 const gateState = gate ? gate.state() : 'unavailable';
                 const message = gateState === 'moving' ? 'GAMES LOCKED  /  VEHICLE MUST BE PARKED' : gateState === 'stale' ? 'GAMES LOCKED  /  SPEED DATA IS STALE' : 'CHECKING VEHICLE SPEED  /  GAMES LOCKED';
-                text(cv, message, 800, 464, 18, C.red, { align: 'center', font: 'bold', spacing: 1 });
+                text(cv, message, 800, contentH - 38, 18, C.red, { align: 'center', font: 'bold', spacing: 1 });
             } else {
-                text(cv, 'TURN TO SELECT', 78, 464, 16, C.muted, { font: 'bold' });
-                text(cv, 'PRESS TO PLAY', 800, 464, 18, C.accent, { align: 'center', font: 'bold', spacing: 1 });
-                text(cv, 'TOUCH: TAP A GAME', 1520, 464, 15, C.muted, { align: 'right', font: 'bold' });
+                text(cv, 'ROTATE / TILT TO BROWSE', 78, contentH - 38, 16, C.muted, { font: 'bold' });
+                text(cv, 'PRESS TO START', 800, contentH - 38, 18, C.accent, { align: 'center', font: 'bold', spacing: 1 });
+                text(cv, 'LONG PRESS: BACK', 1520, contentH - 38, 15, C.muted, { align: 'right', font: 'bold' });
             }
         }
         function drawIcon(cv, id, x, y, color) {
@@ -224,16 +223,19 @@ mgu.run({
             box(cv, x - w*.31, y - h*.23, w*.62, h*.27, '#26313a', 6*scale);
             cv.fillRect(x-w*.4,y+h*.28,w*.8,h*.1,'#26313a');
         }
-        function drawGame(cv, dt) {
+        function drawGame(cv, dt, contentH) {
             const game = GAMES.find((g) => g.id === active);
-            drawHeader(cv, game.title, 'PRESS TO PAUSE  /  LIBRARY BUTTON TO EXIT');
-            box(cv, 48, 130, 1504, 342, C.panel, 18);
+            drawHeader(cv, game.title, 'LONG PRESS TO RETURN TO HUB');
+            box(cv, 48, 130, 1504, contentH - 150, C.panel, 18);
             if (!paused && !state.gameover && parked()) update(dt);
+            // Enlarge the game scene into the wide, low ID7 display while keeping its center fixed.
+            cv.xf(1.12, -96, -20);
             if (active === 'race') drawRace(cv);
             else if (active === 'target') drawTarget(cv);
             else if (active === 'tetris') drawTetris(cv);
             else if (active === 'breakout') drawBreakout(cv);
             else drawSnake(cv);
+            cv.xf(0, 0, 0);
             text(cv, 'SCORE  ' + score, 1498, 165, 17, C.accent, { font: 'bold', align: 'right' });
             if (paused || state.gameover) {
                 box(cv, 620, 246, 360, 76, '#20262eee', 16);
@@ -243,6 +245,15 @@ mgu.run({
                 box(cv, 510, 232, 580, 92, '#331f25ee', 18);
                 text(cv, 'GAME PAUSED  /  VEHICLE MOVING', 800, 285, 21, C.red, { font: 'bold', align: 'center' });
             }
+            box(cv, 48, contentH - 66, 1504, 44, C.panel2, 14);
+            const hints = {
+                race: 'LEFT / RIGHT CHANGE LANES  ·  UP TURBO  ·  PRESS PAUSE',
+                target: 'TURN / TILT TO MOVE  ·  PRESS TO TAG THE TARGET',
+                tetris: 'LEFT / RIGHT MOVE  ·  UP ROTATE  ·  DOWN DROP',
+                breakout: state.launched ? 'LEFT / RIGHT MOVE THE PADDLE  ·  PRESS PAUSE' : 'LEFT / RIGHT POSITION  ·  PRESS TO LAUNCH',
+                snake: 'FOUR DIRECTIONS MOVE  ·  PRESS TO PAUSE',
+            };
+            text(cv, hints[active], 800, contentH - 38, 16, C.muted, { align: 'center', font: 'bold', spacing: 1 });
         }
         function update(dt) {
             const s = state; s.tick += dt;
@@ -307,7 +318,6 @@ mgu.run({
             }
             state.traffic.forEach((other) => sideCar(cv, other.x, y0+laneH*(other.lane+.5), other.color));
             sideCar(cv,800,y0+laneH*(state.x+.5),C.accent);
-            text(cv,'ROTATE / LEFT-RIGHT TO CHANGE LANE  /  UP FOR TURBO',800,460,15,C.muted,{align:'center',font:'bold',spacing:1});
         }
         function sideCar(cv,x,y,color) {
             cv.roundRect(x-38,y-26,76,52,15,'#090d10');
@@ -325,7 +335,6 @@ mgu.run({
                 if(x===state.targetX&&y===state.targetY) cv.circle(px+25,py,9,C.red);
                 if(x===state.x&&y===state.y) cv.strokeRoundRect(px+14,py-11,23,23,8,2,C.accent);
             }
-            text(cv,'MOVE TO THE TARGET  /  PRESS TO SCORE',800,450,15,C.muted,{align:'center',font:'bold',spacing:1});
         }
         function drawTetris(cv) {
             const x0=650,y0=158,cell=30;
@@ -334,34 +343,40 @@ mgu.run({
                 if(state.board[y][x]) box(cv,x0+x*cell+2,y0+y*cell+2,cell-6,cell-6,C.accent,4);
             }
             (state.piece||[]).forEach(([x,y])=>box(cv,x0+(state.px+x)*cell,y0+(state.py+y)*cell,cell-3,cell-3,C.blue,4));
-            text(cv,'UP: ROTATE  /  LEFT-RIGHT: MOVE  /  DOWN: HARD DROP',800,478,15,C.muted,{align:'center',font:'bold',spacing:1});
         }
         function drawBreakout(cv) {
             for(let y=0;y<3;y++) for(let x=0;x<14;x++) if(state.bricks[y][x]) box(cv,430+x*51,168+y*26,45,17,y===0?C.blue:y===1?'#d48cff':'#ffb45b',5);
             cv.circle(430+state.ballX*51,142+state.ballY*28,8,C.text);
             cv.roundRect(430+(state.paddle||7)*51-42,412,84,10,5,C.accent);
-            text(cv,state.launched?'LEFT / RIGHT TO MOVE THE PADDLE  /  LIVES '+state.lives:'PRESS TO LAUNCH  /  LEFT-RIGHT TO POSITION',800,458,15,C.muted,{align:'center',font:'bold',spacing:1});
+            text(cv,'LIVES  '+state.lives,1170,240,18,C.text,{font:'bold'});
         }
         function drawSnake(cv) {
             const x0=580,y0=160,cell=28;
             for(let y=0;y<10;y++) for(let x=0;x<16;x++) cv.strokeRoundRect(x0+x*cell,y0+y*cell,cell-2,cell-2,3,'#303842',1);
             state.snake.forEach((p,i)=>box(cv,x0+p.x*cell,y0+p.y*cell,cell-3,cell-3,i? '#54d6bd':C.text,5));
             cv.circle(x0+state.food.x*cell+13,y0+state.food.y*cell+13,7,C.red);
-            text(cv,'USE THE FOUR DIRECTIONS',800,470,15,C.muted,{align:'center',font:'bold',spacing:1});
         }
         async function render() {
             const now = Date.now(), dt = Math.min(80, now - last); last = now;
             const cv = ctx.canvas(W,H).clear(C.bg);
-            if (!active) drawHome(cv); else drawGame(cv,dt);
+            const placement = ctx.display && ctx.display.place;
+            const extension = placement && placement.full ? (placement.extra || 0) : (cv.extra || 0);
+            const contentH = H + extension;
+            cv.fillRect(0, 0, W, contentH, C.bg);
+            if (!active) drawHome(cv, contentH); else drawGame(cv,dt,contentH);
             await ui.image('MAIN_GFX',cv);
         }
         function sync() {
             if (active && !parked()) paused = true;
             const visible = ui.isVisible('MAIN') && (!ui.hasFocus || ui.hasFocus('MAIN'));
-            const shouldGrab = visible && parked();
+            // Once a game has started while parked, keep the controller routed here even if fresh
+            // speed data briefly goes stale. The game pauses on a stale/moving car; it must not
+            // hand the knob back to the HMI in the middle of that game.
+            const shouldGrab = visible && (parked() || !!active);
             if (shouldGrab !== grabbed) {
                 grabbed = shouldGrab;
                 if (ctx.controller) ctx.controller.grab(grabbed);
+                log.info('controller ' + (grabbed ? 'grabbed by ROI Game Hub' : 'released to HMI'));
             }
         }
         setInterval(sync, 100);
