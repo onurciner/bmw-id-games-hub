@@ -1,0 +1,7 @@
+{
+  "id": "roi_game_hub",
+  "version": "0.1.0",
+  "title": "ROI Game Hub",
+  "description": "Five controller-friendly 2D mini games for parked vehicles",
+  "mguHmi": ["ID7", "ID8"]
+}

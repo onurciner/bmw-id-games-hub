@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "components": [
+    {
+      "id": "roi_game_hub",
+      "kind": "app",
+      "path": "mgu/repo-app",
+      "build": {
+        "node": "scripts/mgu-repo-build.js",
+        "args": ["{id}", "{version}"]
+      },
+      "title": "ROI Game Hub",
+      "description": "Five controller-friendly 2D mini games for parked vehicles",
+      "mguHmi": ["ID7", "ID8"],
+      "requires": {
+        "mgu-deploy": "0.8.19",
+        "idrive7-renderd": "2.1.18",
+        "mgu-inputgate": "1.1.0"
+      },
+      "uninstallable": true
+    },
+    {
+      "id": "mgu-deploy",
+      "kind": "tool",
+      "path": "mgu/repo-tools/mgu-deploy"
+    },
+    {
+      "id": "idrive7-renderd",
+      "kind": "tool",
+      "path": "mgu/repo-tools/idrive7-renderd",
+      "requires": { "mgu-deploy": "0.6.1" }
+    },
+    {
+      "id": "mgu-inputgate",
+      "kind": "tool",
+      "path": "mgu/repo-tools/mgu-inputgate"
+    }
+  ]
+}

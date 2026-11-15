@@ -1,0 +1,96 @@
+{
+  "id": "idrive7-renderd",
+  "kind": "tool",
+  "version": "2.1.18",
+  "title": "GPU renderer",
+  "description": "The apps' own GPU renderer (mgu-render): draws them at 60 fps, beside the MGU Store's Renderer; installed with the apps (iDrive 7 and iDrive 8)",
+  "files": [
+    {
+      "path": "mgu-renderd",
+      "mode": "0755",
+      "sha256": "c5c02c1b829e13b69faef0755a209ec32e8070378778f4d7c1fbeb899a0fb3c0"
+    },
+    {
+      "path": "foreground_gate.js",
+      "mode": "0644",
+      "sha256": "c0293481659e676e992e3b6668d7af7774f9661733e4fad54ae0db7be98ad3a6"
+    },
+    {
+      "path": "hmi_template.js",
+      "mode": "0644",
+      "sha256": "8d235b3ee11dbe538b005580d3b59f6afe54a4e38960d9b5c9015521d1c93bad"
+    },
+    {
+      "path": "mgu-render-hmi.sh",
+      "mode": "0644",
+      "sha256": "2f86fc690ff6d2537825251c07c72643f62adfdb3bf465b3636b680b1abef6b8"
+    },
+    {
+      "path": "mgu-render-hmi-guard.sh",
+      "mode": "0644",
+      "sha256": "d83de0fb277df7aa1319df03e64e0b9fcafa43b8e7d303d072a49aa74a4b42b5"
+    },
+    {
+      "path": "idrive7-renderd-install.sh",
+      "mode": "0644",
+      "sha256": "9bb04a94642997527582a8ff4f9216bd2b302d1d7d1917ddcae9bea8d69511ef"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "0644",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "LICENSE.mgu-renderd",
+      "mode": "0644",
+      "sha256": "481b839c45d8426a0b561b5a4f8d7437dd22dc61e08c8a2817b16831fab1e86a"
+    }
+  ],
+  "units": [
+    {
+      "name": "idrive7-renderd.service"
+    },
+    {
+      "name": "idrive7-renderd-hmi.service"
+    }
+  ],
+  "enable": [
+    {
+      "unit": "idrive7-renderd.service",
+      "target": "oapcontroller.service"
+    },
+    {
+      "unit": "idrive7-renderd-hmi.service",
+      "target": "hmi.service"
+    }
+  ],
+  "recmgr": [
+    "idrive7-renderd",
+    "idrive7-renderd-hmi"
+  ],
+  "restart": [
+    "idrive7-renderd.service"
+  ],
+  "dropins": [
+    {
+      "unit": "display-bridge.socket",
+      "name": "idrive7-renderd.conf"
+    },
+    {
+      "unit": "display-bridge.service",
+      "name": "idrive7-renderd.conf"
+    },
+    {
+      "unit": "display-bridge-hmi.service",
+      "name": "idrive7-renderd.conf"
+    }
+  ],
+  "mguHmi": [
+    "ID7",
+    "ID8"
+  ],
+  "keepRunning": true,
+  "postInstall": [
+    "idrive7-renderd-install.sh"
+  ]
+}
