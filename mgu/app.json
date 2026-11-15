@@ -1,0 +1,27 @@
+{
+  "id": "roi_game_hub",
+  "title": "ROI Game Hub",
+  "description": "Five controller-friendly 2D mini games for parked vehicles",
+  "version": "0.1.0",
+  "vendor": "Roi",
+  "loggingId": "ROGH",
+  "iconGlyph": "game",
+  "mguHmi": ["ID7", "ID8"],
+  "requires": { "idrive7-renderd": "2.1.15" },
+  "signals": {
+    "de.bmw.infotainment.vehicle.Vehicle2": {
+      "statusCarSpeed2": "rs"
+    },
+    "de.bmw.infotainment.controlelements.FrontCCU": {
+      "statusRotaryEncoderState": "rs"
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "ROI Game Hub",
+      "buttons": [["BTN_ACTION", "Library"]]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# Local build caches and generated output; publish/mgu-repo is the distributable source.
+.local/
+dist/
+preview/
+node_modules/
+__pycache__/
+*.pyc
+
+# Keep the private BMW SDK and car credentials out of version control.
+oap-sdk/
+x_call/
+x_call@*.tgz
+*.pem
+*.key
+id_mgu*
+backups/
+
+# Other generated packages and editor/OS files.
+*.mgu
+.env
+.env.*
+.idea/
+.DS_Store

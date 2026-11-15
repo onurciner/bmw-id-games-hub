@@ -1,0 +1,86 @@
+{
+  "schema": 2,
+  "components": [
+    {
+      "id": "mgu-deploy",
+      "kind": "tool",
+      "version": "0.8.19",
+      "title": "Deploy tool",
+      "description": "Installs, updates, rolls back and removes our tools and apps on the head unit, with a snapshot before every change",
+      "artifact": {
+        "name": "mgu-deploy@0.8.19.tgz",
+        "size": 159277,
+        "sha256": "670bbf0f8c9cb85bc7c179b2c4a6dbe2049f8ed94ffeba3f6bc347ef28c882f6",
+        "url": "mgu-deploy@0.8.19.tgz"
+      },
+      "requires": {},
+      "uninstallable": false
+    },
+    {
+      "id": "idrive7-renderd",
+      "kind": "tool",
+      "version": "2.1.18",
+      "title": "GPU renderer",
+      "description": "The apps' own GPU renderer (mgu-render): draws them at 60 fps, beside the MGU Store's Renderer; installed with the apps (iDrive 7 and iDrive 8)",
+      "mguHmi": [
+        "ID7",
+        "ID8"
+      ],
+      "artifact": {
+        "name": "idrive7-renderd@2.1.18.tgz",
+        "size": 96244,
+        "sha256": "17a212f319d2d5fdb0df31b0cc3ee21fc105ccde241e5923fa84d7cfbefdd078",
+        "url": "idrive7-renderd@2.1.18.tgz"
+      },
+      "requires": {
+        "mgu-deploy": "0.6.1"
+      },
+      "uninstallable": true
+    },
+    {
+      "id": "mgu-inputgate",
+      "kind": "tool",
+      "version": "1.1.0",
+      "title": "Controller gate",
+      "description": "Lets the apps have the iDrive controller (tabs, page buttons, settings, Doom); loads into the HMI at the next start (iDrive 7 and iDrive 8)",
+      "mguHmi": [
+        "ID7",
+        "ID8"
+      ],
+      "artifact": {
+        "name": "mgu-inputgate@1.1.0.tgz",
+        "size": 7146,
+        "sha256": "50ac2cff4bd90775717afba76e2342e100f04069a3594fca00f938d5f98e13d5",
+        "url": "mgu-inputgate@1.1.0.tgz"
+      },
+      "requires": {},
+      "uninstallable": false
+    },
+    {
+      "id": "roi_game_hub",
+      "kind": "app",
+      "version": "0.1.0",
+      "title": "ROI Game Hub",
+      "description": "Five controller-friendly 2D mini games for parked vehicles",
+      "author": "Roi",
+      "mguHmi": [
+        "ID7",
+        "ID8"
+      ],
+      "artifact": {
+        "name": "roi_game_hub@0.1.0.tgz",
+        "size": 941280,
+        "sha256": "715ddf9e1716b601c4982f7a6783a3eb2d0c71bcf62ef28187f2bbe6ee86e6f5",
+        "url": "roi_game_hub@0.1.0.tgz"
+      },
+      "requires": {
+        "mgu-deploy": "0.8.19",
+        "idrive7-renderd": "2.1.18",
+        "mgu-inputgate": "1.1.0"
+      },
+      "uninstallable": true,
+      "icon": "roi_game_hub.png",
+      "iconSha256": "c28c5864fe56d0c0523a23579a34c3cc2ed64f809584176ff8b9dd31e5ab5f52"
+    }
+  ]
+}

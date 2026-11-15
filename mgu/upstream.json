@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/cauliflowermossgrape/idrive7-apps.git",
+  "commit": "8d860de5818a2da11d3a3750aab36866cecf6bde",
+  "appFiles": [
+    "app.json",
+    "main.js",
+    "parked-gate.js"
+  ],
+  "storeBuild": {
+    "patch": "store-build.patch",
+    "originalSha256": "f02c7b95f5b57670dfb16c34f5a9a63ab8fad4da37a7af95fd10f720dea05d11",
+    "patchedSha256": "f818cf7be01b2a1295f4c9751ad60ec61024e68e0ca4235e8dbe3b467d454a9d"
+  },
+  "store": {
+    "repository": "https://github.com/robertnisipeanu/mgu-store.git",
+    "commit": "fc5750a8474359ad20c1c01cf29d997ff7f2d621",
+    "deployVersion": "0.8.19"
+  }
+}
